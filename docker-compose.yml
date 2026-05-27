@@ -1,0 +1,51 @@
+services:
+  chatty:
+    build:
+      context: .
+      args:
+        CHATTY_UID: ${CHATTY_UID:-996}
+        CHATTY_GID: ${CHATTY_GID:-985}
+    image: chatty:local
+    restart: unless-stopped
+    init: true
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      KNOWLEDGE_DIR: /app/knowledge
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-*}
+      KNOWLEDGE_CACHE_MS: ${KNOWLEDGE_CACHE_MS:-2000}
+      CHAT_LEARNING_LOG_ENABLED: ${CHAT_LEARNING_LOG_ENABLED:-true}
+      CHAT_LEARNING_LOG_PATH: /var/lib/chatty/learning-events.jsonl
+    ports:
+      - "127.0.0.1:${CHATTY_UPSTREAM_PORT:-13000}:3000"
+    networks:
+      default:
+      kai_ingress:
+        aliases:
+          - chatty
+    volumes:
+      - /var/lib/chatty:/var/lib/chatty
+    tmpfs:
+      - /tmp
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/api/health').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+networks:
+  kai_ingress:
+    external: true
+    name: kai_app_default

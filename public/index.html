@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="el">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chatbot AI Portal</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f5f7fb;
+        --ink: #172033;
+        --muted: #56657a;
+        --line: #d7e0ea;
+        --panel: #ffffff;
+        --deep: #152238;
+        --teal: #0f766e;
+        --teal-dark: #115e59;
+        --amber: #d97706;
+        --red: #b42318;
+        --soft: #eef8f6;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        margin: 0;
+      }
+
+      header {
+        background: var(--deep);
+        color: #ffffff;
+        padding: 24px;
+      }
+
+      .wrap {
+        margin: 0 auto;
+        max-width: 1180px;
+      }
+
+      .header-grid {
+        align-items: end;
+        display: grid;
+        gap: 18px;
+        grid-template-columns: 1fr auto;
+      }
+
+      h1 {
+        font-size: clamp(28px, 4vw, 44px);
+        letter-spacing: 0;
+        line-height: 1.05;
+        margin: 0 0 10px;
+      }
+
+      h2 {
+        font-size: 18px;
+        letter-spacing: 0;
+        margin: 0 0 10px;
+      }
+
+      h3 {
+        font-size: 15px;
+        margin: 0 0 6px;
+      }
+
+      p {
+        line-height: 1.55;
+      }
+
+      .lead {
+        color: #d9e4f2;
+        margin: 0;
+        max-width: 780px;
+      }
+
+      .status {
+        align-items: center;
+        background: rgba(15, 118, 110, 0.22);
+        border: 1px solid rgba(167, 243, 208, 0.42);
+        border-radius: 999px;
+        color: #a7f3d0;
+        display: inline-flex;
+        font-size: 13px;
+        font-weight: 750;
+        gap: 8px;
+        padding: 9px 12px;
+        white-space: nowrap;
+      }
+
+      .status::before {
+        background: #34d399;
+        border-radius: 999px;
+        content: "";
+        height: 8px;
+        width: 8px;
+      }
+
+      .sr-only {
+        border: 0;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+      }
+
+      main {
+        padding: 22px;
+      }
+
+      .grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(12, 1fr);
+      }
+
+      section {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 18px;
+      }
+
+      .wide {
+        grid-column: span 8;
+      }
+
+      .side {
+        grid-column: span 4;
+      }
+
+      .full {
+        grid-column: 1 / -1;
+      }
+
+      .muted {
+        color: var(--muted);
+        margin: 0;
+      }
+
+      .search-form {
+        display: grid;
+        gap: 10px;
+        grid-template-columns: 1fr auto;
+        margin-top: 14px;
+      }
+
+      .search-input {
+        border: 1px solid #b9c7d8;
+        border-radius: 8px;
+        color: var(--ink);
+        font: inherit;
+        min-height: 44px;
+        padding: 10px 12px;
+        width: 100%;
+      }
+
+      .search-input:focus {
+        border-color: var(--teal);
+        box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.14);
+        outline: none;
+      }
+
+      button,
+      a.button {
+        align-items: center;
+        border: 0;
+        border-radius: 8px;
+        cursor: pointer;
+        display: inline-flex;
+        font: inherit;
+        font-size: 14px;
+        font-weight: 750;
+        justify-content: center;
+        min-height: 40px;
+        padding: 9px 13px;
+        text-decoration: none;
+      }
+
+      .primary {
+        background: var(--teal);
+        color: #ffffff;
+      }
+
+      .secondary {
+        background: #e6f4f1;
+        color: var(--teal-dark);
+      }
+
+      button:focus-visible,
+      a.button:focus-visible,
+      .search-input:focus-visible {
+        outline: 3px solid rgba(217, 119, 6, 0.55);
+        outline-offset: 2px;
+      }
+
+      .warning {
+        background: #fff7ed;
+        border: 1px solid #fed7aa;
+        color: #9a3412;
+      }
+
+      .button-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .results {
+        display: grid;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .result,
+      .topic,
+      .issue {
+        background: #f8fafc;
+        border: 1px solid #dde7f1;
+        border-radius: 8px;
+        padding: 12px;
+      }
+
+      .result-head,
+      .metric-row,
+      .endpoint {
+        align-items: center;
+        display: flex;
+        gap: 10px;
+        justify-content: space-between;
+      }
+
+      .badge {
+        background: var(--soft);
+        border: 1px solid #b8dfd9;
+        border-radius: 999px;
+        color: var(--teal-dark);
+        font-size: 12px;
+        font-weight: 800;
+        padding: 4px 8px;
+        white-space: nowrap;
+      }
+
+      .badge.warn {
+        background: #fff7ed;
+        border-color: #fed7aa;
+        color: #9a3412;
+      }
+
+      .badge.red {
+        background: #fef3f2;
+        border-color: #fecdca;
+        color: var(--red);
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 8px;
+      }
+
+      .chip {
+        background: #eef2f7;
+        border: 1px solid #d6e0e8;
+        border-radius: 999px;
+        color: #334155;
+        font-size: 12px;
+        padding: 4px 8px;
+      }
+
+      .topics,
+      .endpoint-list,
+      .metric-list {
+        display: grid;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      code,
+      pre {
+        font-family: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+      }
+
+      code {
+        background: #eef2f7;
+        border: 1px solid #d6e0e8;
+        border-radius: 6px;
+        color: #172033;
+        padding: 2px 5px;
+      }
+
+      pre {
+        background: #101828;
+        border: 1px solid #344054;
+        border-radius: 8px;
+        color: #f8fafc;
+        font-size: 13px;
+        line-height: 1.45;
+        margin: 12px 0 0;
+        overflow: auto;
+        padding: 14px;
+      }
+
+      pre code {
+        background: transparent;
+        border: 0;
+        color: inherit;
+        display: block;
+        padding: 0;
+      }
+
+      .portal-footer {
+        color: var(--muted);
+        font-size: 13px;
+        margin: 14px 0 0;
+      }
+
+      .signal-status {
+        background: #eef8f6;
+        border: 1px solid #b8dfd9;
+        border-radius: 8px;
+        color: var(--teal-dark);
+        font-size: 13px;
+        font-weight: 750;
+        margin-top: 12px;
+        padding: 9px 11px;
+      }
+
+      @media (max-width: 860px) {
+        .header-grid,
+        .grid,
+        .search-form {
+          grid-template-columns: 1fr;
+        }
+
+        .wide,
+        .side,
+        .full {
+          grid-column: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="wrap header-grid">
+        <div>
+          <h1>Chatbot AI Portal</h1>
+          <p class="lead">Κεντρική σελίδα για αναζήτηση στη γνωσιακή βάση, έλεγχο ποιότητας και δοκιμή του widget. Το chat παραμένει Q&A και το handoff γίνεται μόνο με termination signal όταν η συνομιλία δεν προχωρά.</p>
+        </div>
+        <div class="status">Production service</div>
+      </div>
+    </header>
+
+    <main>
+      <div class="wrap grid">
+        <section class="wide">
+          <h2>Smart Portal Search</h2>
+          <p class="muted">Αναζητά με keyword scoring και τοπικό semantic fallback. Αν τα αποτελέσματα είναι κοντά, εμφανίζει εναλλακτικές ώστε να μη «κλειδώσει» λάθος γνώση.</p>
+          <form class="search-form" id="search-form">
+            <label class="sr-only" for="search-input">Αναζήτηση στη γνωσιακή βάση</label>
+            <input class="search-input" id="search-input" type="search" autocomplete="off" placeholder="π.χ. δεν ανοίγει το PACS, αργό internet, εκτυπωτής δεν τυπώνει">
+            <button class="primary" type="submit">Αναζήτηση</button>
+          </form>
+          <div class="button-row">
+            <button class="secondary" type="button" data-example="πρόβλημα πρόσβασης σε εφαρμογή">Δοκιμή Smart Search</button>
+            <button class="secondary" type="button" data-example="δεν ανοίγει το PACS">PACS</button>
+            <button class="secondary" type="button" data-example="αργό internet">Internet</button>
+            <button class="secondary" type="button" data-example="ο εκτυπωτής δεν τυπώνει">Εκτυπωτής</button>
+            <button class="secondary" type="button" data-example="δεν ανοίγει η εφαρμογή ασθενών">Medico</button>
+          </div>
+          <div class="results" id="search-results" aria-live="polite"></div>
+        </section>
+
+        <section class="side">
+          <h2>Έλεγχος υπηρεσίας</h2>
+          <p class="muted">Γρήγορος έλεγχος API και βασικών endpoints.</p>
+          <div class="endpoint-list">
+            <div class="endpoint"><span><span class="badge">GET</span> <code>/api/health</code></span></div>
+            <div class="endpoint"><span><span class="badge">GET</span> <code>/api/search</code></span></div>
+            <div class="endpoint"><span><span class="badge">GET</span> <code>/api/knowledge/audit</code></span></div>
+            <div class="endpoint"><span><span class="badge">POST</span> <code>/api/chat</code></span></div>
+            <div class="endpoint"><span><span class="badge">POST</span> <code>/api/termination</code></span></div>
+          </div>
+          <div class="button-row">
+            <button class="primary" type="button" id="open-chat">Άνοιγμα widget</button>
+            <button class="secondary" type="button" id="test-health">Έλεγχος</button>
+          </div>
+          <p class="portal-footer" id="health-output" aria-live="polite">Δεν έχει γίνει έλεγχος ακόμη.</p>
+          <div class="topics" id="health-topics" aria-label="Θέματα γνώσης από έλεγχο υπηρεσίας">
+            <div class="topic">Τα θέματα γνώσης θα εμφανιστούν μετά τον έλεγχο.</div>
+          </div>
+        </section>
+
+        <section class="full">
+          <h2>Knowledge Review</h2>
+          <p class="muted">Read-only audit για conflicts και governance. Δεν γράφει αυτόματα στη γνωσιακή βάση.</p>
+          <div class="button-row">
+            <button class="primary" type="button" id="load-audit">Φόρτωση audit</button>
+            <button class="secondary" type="button" id="load-learning">Learning report</button>
+          </div>
+          <div class="metric-list" id="audit-summary" aria-live="polite"></div>
+          <div class="results" id="audit-issues" aria-live="polite"></div>
+          <div class="results" id="learning-report" aria-live="polite"></div>
+        </section>
+
+        <section class="full">
+          <h2>Snippet ενσωμάτωσης</h2>
+          <p class="muted">Οι host εφαρμογές ακούνε το <code>hospital-chatbot-termination</code> event και αποφασίζουν τη δική τους επόμενη ροή.</p>
+          <pre><code>&lt;script
+  src="https://10.4.51.232:3443/chatbot-widget.js"
+  data-chatbot-api="https://10.4.51.232:3443/api/chat"
+  data-chatbot-termination="https://10.4.51.232:3443/api/termination"
+  data-chatbot-topics="https://10.4.51.232:3443/api/topics"
+  data-title="Τεχνική υποστήριξη"
+  data-subtitle="Εσωτερική καθοδήγηση"
+&gt;&lt;/script&gt;
+
+&lt;script&gt;
+  window.addEventListener("hospital-chatbot-termination", (event) =&gt; {
+    console.log(event.detail.signal);
+    console.log(event.detail.handoff);
+  });
+&lt;/script&gt;</code></pre>
+        </section>
+
+        <section class="full">
+          <h2>Ζωντανή προβολή termination signal</h2>
+          <p class="muted">Όταν πατηθεί το κουμπί <code>Δεν λύθηκε</code> στο widget, το τελευταίο signal εμφανίζεται εδώ όπως θα το έβλεπε μια host εφαρμογή.</p>
+          <div class="signal-status" id="termination-status">Δεν έχει ληφθεί termination signal ακόμη.</div>
+          <pre><code id="termination-output">{
+  "status": "waiting_for_hospital-chatbot-termination"
+}</code></pre>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      const searchForm = document.getElementById("search-form");
+      const searchInput = document.getElementById("search-input");
+      const searchResults = document.getElementById("search-results");
+      const auditSummary = document.getElementById("audit-summary");
+      const auditIssues = document.getElementById("audit-issues");
+
+      document.getElementById("open-chat").addEventListener("click", () => {
+        window.HospitalChatbotWidget?.open();
+      });
+
+      document.getElementById("test-health").addEventListener("click", runHealthCheck);
+
+      document.querySelectorAll("[data-example]").forEach((button) => {
+        button.addEventListener("click", () => {
+          searchInput.value = button.dataset.example;
+          runSearch(button.dataset.example);
+        });
+      });
+
+      searchForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        runSearch(searchInput.value);
+      });
+
+      document.getElementById("load-audit").addEventListener("click", loadAudit);
+      document.getElementById("load-learning").addEventListener("click", loadLearningReport);
+
+      window.lastChatbotTerminationSignal = null;
+      window.addEventListener("hospital-chatbot-termination", (event) => {
+        window.lastChatbotTerminationSignal = event.detail;
+        document.getElementById("termination-status").textContent = "Λήφθηκε termination signal από το widget.";
+        document.getElementById("termination-output").textContent = JSON.stringify(event.detail, null, 2);
+      });
+
+      async function runSearch(query) {
+        const text = String(query || "").trim();
+        if (!text) {
+          searchResults.innerHTML = '<div class="result">Γράψτε όρο αναζήτησης.</div>';
+          return;
+        }
+
+        searchResults.innerHTML = '<div class="result">Αναζήτηση...</div>';
+        try {
+          const response = await fetch(`/api/search?q=${encodeURIComponent(text)}&limit=8`);
+          const data = await response.json();
+          renderSearchResults(data);
+        } catch {
+          searchResults.innerHTML = '<div class="result warning">Δεν ήταν δυνατή η αναζήτηση.</div>';
+        }
+      }
+
+      function renderSearchResults(data) {
+        const results = data.results || [];
+        if (results.length === 0) {
+          searchResults.innerHTML = '<div class="result">Δεν βρέθηκε σχετική γνώση. Δοκιμάστε πιο συγκεκριμένες λέξεις.</div>';
+          return;
+        }
+
+        searchResults.replaceChildren();
+        if (data.requiresDisambiguation) {
+          const note = document.createElement("div");
+          note.className = "result warning";
+          note.textContent = "Τα πρώτα αποτελέσματα είναι κοντά. Στο chat αυτό θα ζητούσε διευκρίνιση αντί να αλλάξει context βιαστικά.";
+          searchResults.appendChild(note);
+        }
+
+        for (const result of results) {
+          const item = document.createElement("article");
+          item.className = "result";
+          const confidenceClass = result.confidence >= 0.75 ? "badge" : result.confidence >= 0.55 ? "badge warn" : "badge red";
+          item.innerHTML = `
+            <div class="result-head">
+              <h3>${escapeHtml(result.rank)}. ${escapeHtml(result.title)}</h3>
+              <span class="${confidenceClass}">${Math.round(result.confidence * 100)}% ${escapeHtml(result.matchType)}</span>
+            </div>
+            <p class="muted">${escapeHtml(result.answerPreview || "Χωρίς προεπισκόπηση απάντησης.")}</p>
+            <div class="chips">
+              <span class="chip">${escapeHtml(result.source || "knowledge")}</span>
+              <span class="chip">priority ${escapeHtml(result.priority)}</span>
+              <span class="chip">lex ${escapeHtml(result.lexicalScore)}</span>
+              <span class="chip">sem ${escapeHtml(result.semanticScore)}</span>
+              <span class="chip">bm25 ${escapeHtml(result.bm25Score)}</span>
+              ${(result.matchedKeywords || []).slice(0, 5).map((keyword) => `<span class="chip">${escapeHtml(keyword)}</span>`).join("")}
+            </div>
+          `;
+          searchResults.appendChild(item);
+        }
+      }
+
+      async function loadAudit() {
+        auditSummary.innerHTML = '<div class="result">Φόρτωση audit...</div>';
+        auditIssues.replaceChildren();
+        try {
+          const response = await fetch("/api/knowledge/audit");
+          const data = await response.json();
+          renderAudit(data);
+        } catch {
+          auditSummary.innerHTML = '<div class="result warning">Δεν ήταν δυνατή η φόρτωση audit.</div>';
+        }
+      }
+
+      async function loadLearningReport() {
+        const target = document.getElementById("learning-report");
+        target.innerHTML = '<div class="result">Φόρτωση learning report...</div>';
+        try {
+          const response = await fetch("/api/learning/report");
+          const data = await response.json();
+          renderLearningReport(data);
+        } catch {
+          target.innerHTML = '<div class="result warning">Δεν ήταν δυνατή η φόρτωση learning report.</div>';
+        }
+      }
+
+      async function runHealthCheck() {
+        const output = document.getElementById("health-output");
+        const topicsTarget = document.getElementById("health-topics");
+        output.textContent = "Έλεγχος υπηρεσίας και γνωσιακής βάσης...";
+        topicsTarget.innerHTML = '<div class="topic">Φόρτωση θεμάτων γνώσης...</div>';
+
+        try {
+          const [healthResponse, topicsResponse] = await Promise.all([
+            fetch("/api/health"),
+            fetch("/api/topics")
+          ]);
+          const health = await healthResponse.json();
+          const topicsData = await topicsResponse.json();
+          const topics = topicsData.topics || [];
+          output.textContent = health.ok
+            ? `Η υπηρεσία απαντά κανονικά. Η γνωσιακή βάση επέστρεψε ${topics.length} ενδεικτικά θέματα.`
+            : "Η υπηρεσία απάντησε χωρίς ok=true.";
+          renderHealthTopics(topics);
+        } catch {
+          output.textContent = "Δεν ήταν δυνατή η σύνδεση με την υπηρεσία ή τη γνωσιακή βάση.";
+          topicsTarget.innerHTML = '<div class="topic">Δεν φορτώθηκαν θέματα γνώσης.</div>';
+        }
+      }
+
+      function renderHealthTopics(topics) {
+        const target = document.getElementById("health-topics");
+        if (!topics.length) {
+          target.innerHTML = '<div class="topic">Δεν επιστράφηκαν θέματα γνώσης.</div>';
+          return;
+        }
+
+        target.replaceChildren(
+          ...topics.slice(0, 5).map((topic) => {
+            const item = document.createElement("div");
+            item.className = "topic";
+            item.textContent = topic.title;
+            return item;
+          })
+        );
+      }
+
+      function renderAudit(data) {
+        auditSummary.replaceChildren(
+          metric("Score", `${data.score}/100`),
+          metric("Entries", data.totals.entries),
+          metric("Keywords", data.totals.keywords),
+          metric("Warnings", (data.issues || []).filter((issue) => issue.severity === "warning").length),
+          metric("Missing owner", data.totals.missingOwner)
+        );
+
+        auditIssues.replaceChildren();
+        for (const issue of (data.issues || []).slice(0, 8)) {
+          const item = document.createElement("article");
+          item.className = "issue";
+          const className = issue.severity === "warning" ? "badge warn" : "badge";
+          item.innerHTML = `
+            <div class="result-head">
+              <h3>${escapeHtml(issue.type)}</h3>
+              <span class="${className}">${escapeHtml(issue.severity)}</span>
+            </div>
+            <p class="muted">${escapeHtml(issue.message)}</p>
+            <p class="portal-footer">${escapeHtml(issue.recommendation || "")}</p>
+          `;
+          auditIssues.appendChild(item);
+        }
+      }
+
+      function renderLearningReport(data) {
+        const target = document.getElementById("learning-report");
+        const queue = data.reviewQueue || [];
+        const unresolved = data.unresolvedTopics || [];
+        target.replaceChildren();
+
+        const summary = document.createElement("article");
+        summary.className = "result";
+        summary.innerHTML = `
+          <div class="result-head">
+            <h3>Learning Report</h3>
+            <span class="badge">${escapeHtml(data.totals?.events || 0)} events</span>
+          </div>
+          <p class="muted">Chat: ${escapeHtml(data.totals?.chatExchanges || 0)} · Termination: ${escapeHtml(data.totals?.terminationSignals || 0)}</p>
+        `;
+        target.appendChild(summary);
+
+        if (queue.length === 0 && unresolved.length === 0) {
+          const empty = document.createElement("article");
+          empty.className = "result";
+          empty.textContent = "Δεν υπάρχουν αρκετά learning events για review queue.";
+          target.appendChild(empty);
+          return;
+        }
+
+        for (const item of queue.slice(0, 8)) {
+          const row = document.createElement("article");
+          row.className = "issue";
+          row.innerHTML = `
+            <div class="result-head">
+              <h3>${escapeHtml(item.label)}</h3>
+              <span class="${item.priority === "high" ? "badge warn" : "badge"}">${escapeHtml(item.count)} · ${escapeHtml(item.type)}</span>
+            </div>
+            <p class="muted">${escapeHtml(item.suggestedAction)}</p>
+          `;
+          target.appendChild(row);
+        }
+      }
+
+      function metric(label, value) {
+        const item = document.createElement("div");
+        item.className = "result metric-row";
+        item.innerHTML = `<strong>${escapeHtml(label)}</strong><span class="badge">${escapeHtml(value)}</span>`;
+        return item;
+      }
+
+      function escapeHtml(value) {
+        return String(value ?? "")
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+    </script>
+    <script
+      src="/chatbot-widget.js"
+      data-chatbot-api="/api/chat"
+      data-chatbot-termination="/api/termination"
+      data-chatbot-topics="/api/topics"
+      data-title="Τεχνική υποστήριξη"
+      data-subtitle="Εσωτερική καθοδήγηση"
+    ></script>
+  </body>
+</html>

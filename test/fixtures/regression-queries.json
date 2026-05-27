@@ -1,0 +1,17 @@
+﻿[
+  {
+    "message": "δεν ανοίγει η εφαρμογή ασθενών",
+    "expectedType": "match",
+    "expectedTitle": "Medico / εφαρμογή ασθενών δεν ανοίγει"
+  },
+  {
+    "message": "δεν ανοίγει το PACS",
+    "expectedType": "match",
+    "expectedTitle": "AGFA RIS/PACS ή απεικονιστικό σύστημα δεν ανοίγει"
+  },
+  {
+    "message": "αργό internet",
+    "expectedType": "match",
+    "expectedTitle": "Το Internet είναι αργό"
+  }
+]

@@ -1,0 +1,18 @@
+{
+  "name": "hospital-intranet-chatbot",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Keyword-based chatbot widget for hospital intranet applications.",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test",
+    "learning:report": "node tools/learning_report.mjs",
+    "gmail:import": "python tools/gmail_it_knowledge_import.py",
+    "kb:analyze": "node tools/kb_conflict_analyzer.mjs",
+    "regression:candidates": "node tools/regression_candidates.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
