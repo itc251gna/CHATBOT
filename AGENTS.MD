@@ -24,6 +24,7 @@ The app is a Node.js server with no npm dependencies:
 - `public/index.html`: central Chatbot AI Portal.
 - `public/assets/251gna_logo.png`: source hospital logo copied from COMMON ASSETS.
 - `public/assets/251gna_logo_mark.png`: cropped logo mark used by the portal header and widget header.
+- `public/assets/251gna_logo_mark_transparent.png`: active transparent logo mark used by the portal header and widget header.
 - `knowledge/it-knowledge.txt`: IT, Medico, LIS, RIS/PACS, ΦΙΛΙΠΠΟΣ, MIS, Internet knowledge.
 - `knowledge/facilities-issues.txt`: facilities knowledge.
 - `test/*.test.js`: Node test suite.

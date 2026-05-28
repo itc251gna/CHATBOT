@@ -12,7 +12,7 @@
     topicsUrl: resolveUrl("/api/topics"),
     title: "Τεχνική υποστήριξη",
     subtitle: "Εσωτερική καθοδήγηση",
-    logoUrl: resolveUrl("/assets/251gna_logo_mark.png"),
+    logoUrl: resolveUrl("/assets/251gna_logo_mark_transparent.png"),
     launcherLabel: "?",
     speechLanguage: "el-GR",
     handoffMinMessages: 3,
@@ -139,14 +139,11 @@
       }
 
       .hc-logo {
-        background: #ffffff;
-        border: 1px solid rgba(226, 232, 240, 0.72);
-        border-radius: 6px;
         flex: 0 0 auto;
-        height: 38px;
+        filter: drop-shadow(0 5px 10px rgba(2, 8, 23, 0.22));
+        height: 42px;
         object-fit: contain;
-        padding: 4px;
-        width: 46px;
+        width: 36px;
       }
 
       .hc-logo[hidden] {
