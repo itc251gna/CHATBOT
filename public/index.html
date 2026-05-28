@@ -43,10 +43,33 @@
       }
 
       .header-grid {
-        align-items: end;
+        align-items: center;
         display: grid;
         gap: 18px;
         grid-template-columns: 1fr auto;
+      }
+
+      .brand-lockup {
+        align-items: center;
+        display: flex;
+        gap: 16px;
+        min-width: 0;
+      }
+
+      .portal-logo {
+        background: #ffffff;
+        border: 1px solid rgba(226, 232, 240, 0.78);
+        border-radius: 8px;
+        box-shadow: 0 12px 30px rgba(2, 8, 23, 0.24);
+        flex: 0 0 auto;
+        height: 72px;
+        object-fit: contain;
+        padding: 7px;
+        width: 88px;
+      }
+
+      .header-copy {
+        min-width: 0;
       }
 
       h1 {
@@ -342,6 +365,15 @@
           grid-template-columns: 1fr;
         }
 
+        .brand-lockup {
+          align-items: flex-start;
+        }
+
+        .portal-logo {
+          height: 62px;
+          width: 76px;
+        }
+
         .wide,
         .side,
         .full {
@@ -353,9 +385,12 @@
   <body>
     <header>
       <div class="wrap header-grid">
-        <div>
+        <div class="brand-lockup">
+          <img class="portal-logo" src="/assets/251gna_logo_mark.png" alt="251 ΓΝΑ" width="88" height="72" decoding="async">
+          <div class="header-copy">
           <h1>Chatbot AI Portal</h1>
           <p class="lead">Κεντρική σελίδα για αναζήτηση στη γνωσιακή βάση, έλεγχο ποιότητας και δοκιμή του widget. Το chat παραμένει Q&A και το handoff γίνεται μόνο με termination signal όταν η συνομιλία δεν προχωρά.</p>
+          </div>
         </div>
         <div class="status">Production service</div>
       </div>

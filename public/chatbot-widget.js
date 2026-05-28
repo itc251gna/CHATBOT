@@ -12,6 +12,7 @@
     topicsUrl: resolveUrl("/api/topics"),
     title: "Τεχνική υποστήριξη",
     subtitle: "Εσωτερική καθοδήγηση",
+    logoUrl: resolveUrl("/assets/251gna_logo_mark.png"),
     launcherLabel: "?",
     speechLanguage: "el-GR",
     handoffMinMessages: 3,
@@ -24,6 +25,7 @@
     topicsUrl: dataset.chatbotTopics || dataset.topicsUrl,
     title: dataset.title,
     subtitle: dataset.subtitle,
+    logoUrl: dataset.logoUrl || dataset.chatbotLogo,
     launcherLabel: dataset.launcherLabel,
     speechLanguage: dataset.speechLanguage,
     handoffMinMessages: dataset.handoffMinMessages,
@@ -34,6 +36,7 @@
   config.apiUrl = resolveUrl(config.apiUrl);
   config.terminationUrl = resolveUrl(config.terminationUrl);
   config.topicsUrl = resolveUrl(config.topicsUrl);
+  config.logoUrl = config.logoUrl ? resolveUrl(config.logoUrl) : "";
   config.handoffMinMessages = Number.parseInt(config.handoffMinMessages, 10) || defaults.handoffMinMessages;
   const requestTimeoutMs = Number(config.requestTimeoutMs) || 12000;
 
@@ -126,6 +129,28 @@
         gap: 12px;
         justify-content: space-between;
         padding: 14px 16px;
+      }
+
+      .hc-brand {
+        align-items: center;
+        display: flex;
+        gap: 10px;
+        min-width: 0;
+      }
+
+      .hc-logo {
+        background: #ffffff;
+        border: 1px solid rgba(226, 232, 240, 0.72);
+        border-radius: 6px;
+        flex: 0 0 auto;
+        height: 38px;
+        object-fit: contain;
+        padding: 4px;
+        width: 46px;
+      }
+
+      .hc-logo[hidden] {
+        display: none;
       }
 
       .hc-title {
@@ -345,9 +370,12 @@
     <div class="hc-root">
       <section class="hc-panel" hidden aria-label="Τεχνική υποστήριξη">
         <header class="hc-header">
-          <div class="hc-title">
-            <strong></strong>
-            <span></span>
+          <div class="hc-brand">
+            <img class="hc-logo" alt="" aria-hidden="true" decoding="async">
+            <div class="hc-title">
+              <strong></strong>
+              <span></span>
+            </div>
           </div>
           <button class="hc-icon-button" type="button" aria-label="Κλείσιμο" title="Κλείσιμο">×</button>
         </header>
@@ -375,6 +403,15 @@
 
   shadow.querySelector(".hc-title strong").textContent = config.title;
   shadow.querySelector(".hc-title span").textContent = config.subtitle;
+  const logo = shadow.querySelector(".hc-logo");
+  if (config.logoUrl) {
+    logo.src = config.logoUrl;
+    logo.addEventListener("error", () => {
+      logo.hidden = true;
+    });
+  } else {
+    logo.hidden = true;
+  }
   launcher.textContent = config.launcherLabel;
 
   let initialized = false;
